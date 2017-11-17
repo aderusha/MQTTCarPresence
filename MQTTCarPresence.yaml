@@ -13,7 +13,7 @@
     entity_id: 'cover.garage_door'
 
 # car sensor is disconnected for one minute and the garage door is open
-- alias: AllensCarPresence_OFF
+- alias: CarPresence_OFF
   trigger:
     platform: state
     entity_id: binary_sensor.CarPresence
