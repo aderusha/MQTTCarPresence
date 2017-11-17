@@ -1,0 +1,29 @@
+# car sensor is connected and the garage door is closed
+- alias: CarPresence_ON
+  trigger:
+    platform: state
+    entity_id: binary_sensor.CarPresence
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: 'cover.garage_door'
+    state: 'closed'
+  action:
+  - service: cover.open_cover
+    entity_id: 'cover.garage_door'
+
+# car sensor is disconnected for one minute and the garage door is open
+- alias: AllensCarPresence_OFF
+  trigger:
+    platform: state
+    entity_id: binary_sensor.CarPresence
+    to: 'off'
+    for:
+      minutes: 1
+  condition:
+  - condition: state
+    entity_id: 'cover.garage_door'
+    state: 'open'
+  action:
+  - service: cover.close_cover
+    entity_id: 'cover.garage_door'
