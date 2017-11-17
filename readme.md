@@ -8,7 +8,14 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 
 [The included Home Assitant automation](MQTTCarPresence.yaml) example utilizes this information to open or close a connected garage door.
 
-## Workflow
+## Workflow - User perspective
+* Car is in your garage and the garage door is closed
+* You get in the car and turn it on, the garage door opens
+* You drive away, the garage door closes a minute later
+* When you arrive back home, the garage door opens as you approach
+* When you turn off your car, the garage door closes about a minute later
+
+## Detailed workflow
 * Car is powered off, garage door is closed
 * Car turns on, device publishes connection message to MQTT
 * Home automation platform sees that the garage door is closed and the device is connected, then sends command to open garage
@@ -20,3 +27,10 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 * Home automation platform sees that the garage door is closed and the device is connected, then sends command to open garage
 * You park your car and turn it off
 * Home automation platform sees the garage door is open and the device has disconnected, then sends command to close garage
+
+## Bill of Materials
+* [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1_mini_pro)
+* u.FL to SMA antenna whip
+* External 2.4GHz WiFi antenna
+* M3x8mm socket head cap screw (or similar)
+* M3x4x6 threaded insert (or similar)
