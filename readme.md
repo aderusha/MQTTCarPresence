@@ -35,12 +35,15 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 * M3x8mm socket head cap screw (or similar)
 * M3x4x6 threaded insert (or similar)
 
-## Arduino programming notes
+## Arduino programming
 The first order of business will be to setup the Arduino IDE to flash the provided Arduino sketch to the ESP8266.  [Download the IDE for your platform](https://www.arduino.cc/en/Main/Software) and [follow these instructions to add support for the ESP8266 platform](https://github.com/esp8266/Arduino#installing-with-boards-manager).
 
 Next you will need to add the PubSubClient library for MQTT.  [Follow this guide for the general process](https://www.arduino.cc/en/Guide/Libraries) and add the 'PubSubClient' from the Library Manager.  Once that is installed you will need to edit the `PubSubClient.h` file and change the line `#define MQTT_MAX_PACKET_SIZE 128` to `#define MQTT_MAX_PACKET_SIZE 512`.  You can find the installed library under the path shown in `File > Preferences > Sketchbook location`.
 
-[At the top of the Arduino sketch are several fields you must modify to fit your environment (WiFi details, MQTT broker IP, node name, etc)](https://github.com/aderusha/MQTTCarPresence/blob/master/MQTTCarPresence/MQTTCarPresence.ino#L3-L10).  Once those fields have been set you can upload to your microcontroller and monitor sensor status in Home Assistant.
+[At the top of the Arduino sketch are several fields you must modify to fit your environment](https://github.com/aderusha/MQTTCarPresence/blob/master/MQTTCarPresence/MQTTCarPresence.ino#L3-L10) (WiFi details, MQTT broker IP, node name, etc).  Once those fields have been set you can upload to your microcontroller and monitor sensor status in Home Assistant.
 
 > ## WARNING:
 > If you will be deploying more than one of these devices you **must** change the node names to be unique.  Failure to do so will result in a cascading series of MQTT connections/disconnections as your devices compete for access to your broker.
+
+## WeMos D1 Mini Pro Antenna
+In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need to move a 0ohm 0603 SMT resistor.  See [this blog post](http://raspi.tv/2017/how-to-use-external-antenna-on-wemos-d1-mini-pro-surface-mount-rework-video) along with [an accompanying video](https://www.youtube.com/watch?v=3lHoG1mu7hY&t=72) on how to make that happen.  A hot-air station will make this easier, but I was able to do this with a normal pencil iron.
