@@ -15,17 +15,25 @@ const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Disco
 const String mqttDiscoBinaryStateTopic = mqttDiscoveryPrefix + "/binary_sensor/" + mqttNode + "/state";
 const String mqttDiscoBinaryConfigTopic = mqttDiscoveryPrefix + "/binary_sensor/" + mqttNode + "/config";
 // And a sensor for WiFi signal strength
-const String mqttDiscoSignalStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "/state";
-const String mqttDiscoSignalConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "/config";
+const String mqttDiscoSignalStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".signal/state";
+const String mqttDiscoSignalConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".signal/config";
+// And a sensor for device uptime
+const String mqttDiscoUptimeStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".uptime/state";
+const String mqttDiscoUptimeConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".uptime/config";
 
 // The strings below will spill over the PubSubClient_MAX_PACKET_SIZE 128
 // You'll need to manually set MQTT_MAX_PACKET_SIZE in PubSubClient.h to 512
 const String mqttDiscoBinaryConfigPayload = "{\"name\": \"" + mqttNode + "\", \"device_class\": \"connectivity\", \"state_topic\": \"" + mqttDiscoBinaryStateTopic + "\"}";
-const String mqttDiscoSignalConfigPayload = "{\"name\": \"" + mqttNode + "\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoSignalStateTopic + "\", \"unit_of_measurement\": \"dBm\", \"value_template\": '{{ value }}'}";
+const String mqttDiscoSignalConfigPayload = "{\"name\": \"" + mqttNode + ".signal\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoSignalStateTopic + "\", \"unit_of_measurement\": \"dBm\", \"value_template\": \"{{ value }}\"}";
+const String mqttDiscoUptimeConfigPayload = "{\"name\": \"" + mqttNode + ".uptime\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoUptimeStateTopic + "\", \"unit_of_measurement\": \"msec\", \"value_template\": \"{{ value }}\"}";
 
-// Set the signal strength reporting interval in milliseconds
-const unsigned long signalReportInterval = 5000;
-unsigned long signalReportTimer = millis();
+// Set the signal strength and uptime reporting interval in milliseconds
+const unsigned long reportInterval = 5000;
+unsigned long reportTimer = millis();
+
+// Set LED "twinkle" time for maximum daylight visibility
+const unsigned long twinkleInterval = 50;
+unsigned long twinkleTimer = millis();
 
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -76,14 +84,22 @@ void loop() {
   // MQTT client loop
   if (mqttClient.connected()) {
     mqttClient.loop();
-  }  
+  }
 
-  // Report signal strength
-  if (mqttClient.connected() && ((millis() - signalReportTimer) >= signalReportInterval)) {
+  // LED twinkle
+  if (mqttClient.connected() && ((millis() - twinkleTimer) >= twinkleInterval)) {
+    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+    twinkleTimer = millis();
+  }
+
+  // Report signal strength and uptime
+  if (mqttClient.connected() && ((millis() - reportTimer) >= reportInterval)) {
     String signalStrength = String(WiFi.RSSI());
+    String uptimeTimer = String(millis());
     mqttClient.publish(mqttDiscoSignalStateTopic.c_str(), signalStrength.c_str());
-    signalReportTimer = millis();
-  }  
+    mqttClient.publish(mqttDiscoUptimeStateTopic.c_str(), uptimeTimer.c_str());
+    reportTimer = millis();
+  }
 
   // OTA loop
   if (otaPassword[0]) {
@@ -124,17 +140,21 @@ void mqttConnect() {
   if (mqttClient.connect(mqttNode.c_str(), mqttUser, mqttPassword, mqttDiscoBinaryStateTopic.c_str(), 1, 1, "OFF")) {
     // when connected, record signal strength and reset reporting timer
     String signalStrength = String(WiFi.RSSI());
-    signalReportTimer = millis();
+    reportTimer = millis();
+    String uptimeTimer = String(millis());
     // publish MQTT discovery topics and device state
     Serial.println("MQTT discovery connectivity config: [" + mqttDiscoBinaryConfigTopic + "] : [" + mqttDiscoBinaryConfigPayload + "]");
     Serial.println("MQTT discovery connectivity state: [" + mqttDiscoBinaryStateTopic + "] : [ON]");
     Serial.println("MQTT discovery signal config: [" + mqttDiscoSignalConfigTopic + "] : [" + mqttDiscoSignalConfigPayload + "]");
     Serial.println("MQTT discovery signal state: [" + mqttDiscoSignalStateTopic + "] : " + WiFi.RSSI());
+    Serial.println("MQTT discovery uptime config: [" + mqttDiscoUptimeConfigTopic + "] : [" + mqttDiscoUptimeConfigPayload + "]");
+    Serial.println("MQTT discovery uptime state: [" + mqttDiscoUptimeStateTopic + "] : " + uptimeTimer);
     mqttClient.publish(mqttDiscoBinaryConfigTopic.c_str(), mqttDiscoBinaryConfigPayload.c_str(), true);
     mqttClient.publish(mqttDiscoBinaryStateTopic.c_str(), "ON");
     mqttClient.publish(mqttDiscoSignalConfigTopic.c_str(), mqttDiscoSignalConfigPayload.c_str(), true);
     mqttClient.publish(mqttDiscoSignalStateTopic.c_str(), signalStrength.c_str());
-    
+    mqttClient.publish(mqttDiscoUptimeConfigTopic.c_str(), mqttDiscoUptimeConfigPayload.c_str(), true);
+    mqttClient.publish(mqttDiscoUptimeStateTopic.c_str(), uptimeTimer.c_str());
     Serial.println("MQTT connected");
     digitalWrite(LED_BUILTIN, LOW);
   }
