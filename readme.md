@@ -20,12 +20,14 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 * Car turns on, device publishes connection message to MQTT
 * Home automation platform sees that the garage door is closed and the device is connected, then sends command to open garage
 * You drive away when ready
-* Device eventually drives out of range, MQTT broker sends disconnection message configured as the LWT
+* Device eventually drives out of range, dropping connection with the broker
+* MQTT broker sends disconnection message configured as the LWT
 * Home automation platform sees the garage door is open and the device has disconnected, then sends command to close garage
 * You go on about your day, then return home.
 * Device connects to WiFi, then MQTT and publishes connection message
 * Home automation platform sees that the garage door is closed and the device is connected, then sends command to open garage
-* You park your car and turn it off
+* You park your car and turn it off, dropping connection with the broker
+* MQTT broker sends disconnection message configured as the LWT
 * Home automation platform sees the garage door is open and the device has disconnected, then sends command to close garage
 
 ## Bill of Materials
@@ -46,4 +48,4 @@ Next you will need to add the PubSubClient library for MQTT.  [Follow this guide
 > If you will be deploying more than one of these devices you **must** change the node names to be unique.  Failure to do so will result in a cascading series of MQTT connections/disconnections as your devices compete for access to your broker.
 
 ## WeMos D1 Mini Pro Antenna
-In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need to move a 0ohm 0603 SMT resistor.  See [this blog post](http://raspi.tv/2017/how-to-use-external-antenna-on-wemos-d1-mini-pro-surface-mount-rework-video) along with [an accompanying video](https://www.youtube.com/watch?v=3lHoG1mu7hY&t=72) on how to make that happen.  A hot-air station will make this easier, but I was able to do this with a normal pencil iron.
+In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need to move a 0 ohm 0603 SMT resistor.  See [this blog post](http://raspi.tv/2017/how-to-use-external-antenna-on-wemos-d1-mini-pro-surface-mount-rework-video) along with [an accompanying video](https://www.youtube.com/watch?v=3lHoG1mu7hY&t=72) on how to make that happen.  A hot-air station will make this easier, but I was able to do this with a normal pencil iron.
