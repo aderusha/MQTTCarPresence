@@ -15,17 +15,17 @@ const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Disco
 const String mqttDiscoBinaryStateTopic = mqttDiscoveryPrefix + "/binary_sensor/" + mqttNode + "/state";
 const String mqttDiscoBinaryConfigTopic = mqttDiscoveryPrefix + "/binary_sensor/" + mqttNode + "/config";
 // And a sensor for WiFi signal strength
-const String mqttDiscoSignalStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".signal/state";
-const String mqttDiscoSignalConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".signal/config";
+const String mqttDiscoSignalStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-signal/state";
+const String mqttDiscoSignalConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-signal/config";
 // And a sensor for device uptime
-const String mqttDiscoUptimeStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".uptime/state";
-const String mqttDiscoUptimeConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + ".uptime/config";
+const String mqttDiscoUptimeStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-uptime/state";
+const String mqttDiscoUptimeConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-uptime/config";
 
 // The strings below will spill over the PubSubClient_MAX_PACKET_SIZE 128
 // You'll need to manually set MQTT_MAX_PACKET_SIZE in PubSubClient.h to 512
 const String mqttDiscoBinaryConfigPayload = "{\"name\": \"" + mqttNode + "\", \"device_class\": \"connectivity\", \"state_topic\": \"" + mqttDiscoBinaryStateTopic + "\"}";
-const String mqttDiscoSignalConfigPayload = "{\"name\": \"" + mqttNode + ".signal\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoSignalStateTopic + "\", \"unit_of_measurement\": \"dBm\", \"value_template\": \"{{ value }}\"}";
-const String mqttDiscoUptimeConfigPayload = "{\"name\": \"" + mqttNode + ".uptime\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoUptimeStateTopic + "\", \"unit_of_measurement\": \"msec\", \"value_template\": \"{{ value }}\"}";
+const String mqttDiscoSignalConfigPayload = "{\"name\": \"" + mqttNode + "-signal\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoSignalStateTopic + "\", \"unit_of_measurement\": \"dBm\", \"value_template\": \"{{ value }}\"}";
+const String mqttDiscoUptimeConfigPayload = "{\"name\": \"" + mqttNode + "-uptime\", \"device_class\": \"sensor\", \"state_topic\": \"" + mqttDiscoUptimeStateTopic + "\", \"unit_of_measurement\": \"msec\", \"value_template\": \"{{ value }}\"}";
 
 // Set the signal strength and uptime reporting interval in milliseconds
 const unsigned long reportInterval = 5000;
