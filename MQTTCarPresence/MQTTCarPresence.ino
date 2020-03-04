@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Modify these values for your environment
-const char* wifiSSID = "wifissid";  // Your WiFi network name
-const char* wifiPassword = "wifipassword";  // Your WiFi network password
-const char* otaPassword = "";  // OTA update password
-const char* mqttServer = "192.168.1.2";  // Your MQTT server IP address
-const char* mqttUser = ""; // mqtt username, set to "" for no user
-const char* mqttPassword = ""; // mqtt password, set to "" for no password
-const String mqttNode = "CarPresence"; // Your unique hostname for this device
+const char *wifiSSID = "wifissid";                  // Your WiFi network name
+const char *wifiPassword = "wifipassword";          // Your WiFi network password
+const char *otaPassword = "";                       // OTA update password
+const char *mqttServer = "hassio.local";            // Your MQTT server IP address
+const char *mqttUser = "";                          // mqtt username, set to "" for no user
+const char *mqttPassword = "";                      // mqtt password, set to "" for no password
+const String mqttNode = "CarPresence";              // Your unique hostname for this device
 const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,7 +46,8 @@ PubSubClient mqttClient(wifiClient);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // System setup
-void setup() {
+void setup()
+{
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.begin(115200);
@@ -59,9 +60,11 @@ void setup() {
   // Create server and assign callbacks for MQTT
   mqttClient.setServer(mqttServer, 1883);
   mqttClient.setCallback(mqtt_callback);
+  mqttConnect();
 
   // Start up OTA
-  if (otaPassword[0]) {
+  if (otaPassword[0])
+  {
     setupOTA();
   }
 
@@ -70,30 +73,36 @@ void setup() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Main execution loop
-void loop() {
+void loop()
+{
   // check WiFi connection
-  if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED)
+  {
     setupWifi();
   }
 
   // check MQTT connection
-  if (!mqttClient.connected()) {
+  if (!mqttClient.connected())
+  {
     mqttConnect();
   }
 
   // MQTT client loop
-  if (mqttClient.connected()) {
+  if (mqttClient.connected())
+  {
     mqttClient.loop();
   }
 
   // LED twinkle
-  if (mqttClient.connected() && ((millis() - twinkleTimer) >= twinkleInterval)) {
+  if (mqttClient.connected() && ((millis() - twinkleTimer) >= twinkleInterval))
+  {
     digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     twinkleTimer = millis();
   }
 
   // Report signal strength and uptime
-  if (mqttClient.connected() && ((millis() - reportTimer) >= reportInterval)) {
+  if (mqttClient.connected() && ((millis() - reportTimer) >= reportInterval))
+  {
     String signalStrength = String(WiFi.RSSI());
     String uptimeTimer = String(millis());
     mqttClient.publish(mqttDiscoSignalStateTopic.c_str(), signalStrength.c_str());
@@ -102,7 +111,8 @@ void loop() {
   }
 
   // OTA loop
-  if (otaPassword[0]) {
+  if (otaPassword[0])
+  {
     ArduinoOTA.handle();
   }
 }
@@ -112,32 +122,36 @@ void loop() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Handle incoming commands from MQTT
-void mqtt_callback(char* topic, byte* payload, unsigned int payloadLength) {
+void mqtt_callback(char *topic, byte *payload, unsigned int payloadLength)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Connect to WiFi
-void setupWifi() {
+void setupWifi()
+{
   Serial.print("Connecting to WiFi network: " + String(wifiSSID));
   WiFi.hostname(mqttNode.c_str());
   WiFi.mode(WIFI_STA);
+  WiFi.setSleepMode(WIFI_NONE_SLEEP);
   WiFi.begin(wifiSSID, wifiPassword);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    // Wait 500msec seconds before retrying
-    delay(500);
-    Serial.print(".");
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(1);
   }
   Serial.println("\nWiFi connected successfully and assigned IP: " + WiFi.localIP().toString());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // MQTT connection and subscriptions
-void mqttConnect() {
+void mqttConnect()
+{
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("Attempting MQTT connection to broker: " + String(mqttServer));
   // Attempt to connect to broker, setting last will and testament
-  if (mqttClient.connect(mqttNode.c_str(), mqttUser, mqttPassword, mqttDiscoBinaryStateTopic.c_str(), 1, 1, "OFF")) {
+  if (mqttClient.connect(mqttNode.c_str(), mqttUser, mqttPassword, mqttDiscoBinaryStateTopic.c_str(), 1, 1, "OFF"))
+  {
     // when connected, record signal strength and reset reporting timer
     String signalStrength = String(WiFi.RSSI());
     reportTimer = millis();
@@ -149,23 +163,25 @@ void mqttConnect() {
     Serial.println("MQTT discovery signal state: [" + mqttDiscoSignalStateTopic + "] : " + WiFi.RSSI());
     Serial.println("MQTT discovery uptime config: [" + mqttDiscoUptimeConfigTopic + "] : [" + mqttDiscoUptimeConfigPayload + "]");
     Serial.println("MQTT discovery uptime state: [" + mqttDiscoUptimeStateTopic + "] : " + uptimeTimer);
+    mqttClient.publish(mqttDiscoUptimeConfigTopic.c_str(), mqttDiscoUptimeConfigPayload.c_str(), true);
+    mqttClient.publish(mqttDiscoUptimeStateTopic.c_str(), uptimeTimer.c_str());
     mqttClient.publish(mqttDiscoBinaryConfigTopic.c_str(), mqttDiscoBinaryConfigPayload.c_str(), true);
     mqttClient.publish(mqttDiscoBinaryStateTopic.c_str(), "ON");
     mqttClient.publish(mqttDiscoSignalConfigTopic.c_str(), mqttDiscoSignalConfigPayload.c_str(), true);
     mqttClient.publish(mqttDiscoSignalStateTopic.c_str(), signalStrength.c_str());
-    mqttClient.publish(mqttDiscoUptimeConfigTopic.c_str(), mqttDiscoUptimeConfigPayload.c_str(), true);
-    mqttClient.publish(mqttDiscoUptimeStateTopic.c_str(), uptimeTimer.c_str());
     Serial.println("MQTT connected");
     digitalWrite(LED_BUILTIN, LOW);
   }
-  else {
+  else
+  {
     Serial.println("MQTT connection failed, rc=" + String(mqttClient.state()));
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // (mostly) boilerplate OTA setup from library examples
-void setupOTA() {
+void setupOTA()
+{
   // Start up OTA
   // ArduinoOTA.setPort(8266); // Port defaults to 8266
   ArduinoOTA.setHostname(mqttNode.c_str());
@@ -182,11 +198,16 @@ void setupOTA() {
   });
   ArduinoOTA.onError([](ota_error_t error) {
     Serial.println("ESP OTA:  ERROR code " + String(error));
-    if (error == OTA_AUTH_ERROR) Serial.println("ESP OTA:  ERROR - Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("ESP OTA:  ERROR - Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("ESP OTA:  ERROR - Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("ESP OTA:  ERROR - Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("ESP OTA:  ERROR - End Failed");
+    if (error == OTA_AUTH_ERROR)
+      Serial.println("ESP OTA:  ERROR - Auth Failed");
+    else if (error == OTA_BEGIN_ERROR)
+      Serial.println("ESP OTA:  ERROR - Begin Failed");
+    else if (error == OTA_CONNECT_ERROR)
+      Serial.println("ESP OTA:  ERROR - Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR)
+      Serial.println("ESP OTA:  ERROR - Receive Failed");
+    else if (error == OTA_END_ERROR)
+      Serial.println("ESP OTA:  ERROR - End Failed");
   });
   ArduinoOTA.begin();
   Serial.println("ESP OTA:  Over the Air firmware update ready");
