@@ -6,7 +6,7 @@ const char* otaPassword = "dfDF34#$";  // OTA update password
 const char* mqttServer = "192.168.1.187";  // Your MQTT server IP address
 const char* mqttUser = ""; // mqtt username, set to "" for no user
 const char* mqttPassword = ""; // mqtt password, set to "" for no password
-const String mqttNode = "AR230"; // Your unique hostname for this device
+const String mqttNode = "WaveRunner"; // Your unique hostname for this device
 const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
