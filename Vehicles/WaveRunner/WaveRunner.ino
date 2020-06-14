@@ -1,10 +1,14 @@
-//Set Wifi AP and Passwords below
-const char* otaPassword = "";  // OTA update password
-const char* mqttServer = "";  // Your MQTT server IP address
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Modify these values for your environment
+//const char* wifiSSID = "4254GAR";  // Your WiFi network name
+//const char* wifiPassword = "6129206467";  // Your WiFi network password
+const char* otaPassword = "dfDF34#$";  // OTA update password
+const char* mqttServer = "192.168.1.187";  // Your MQTT server IP address
 const char* mqttUser = ""; // mqtt username, set to "" for no user
 const char* mqttPassword = ""; // mqtt password, set to "" for no password
-const String mqttNode = "FishHawk"; // Your unique hostname for this device
+const String mqttNode = "WaveRunner"; // Your unique hostname for this device
 const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
 // We'll create one binary_sensor device to track MQTT connectivity
@@ -55,10 +59,13 @@ void setup() {
   // Start up networking
   WiFi.mode(WIFI_STA);
   
-  wifiMulti.addAP("ssid_from_AP_1", "your_password_for_AP_1");
-  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
-  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
-        
+//  wifiMulti.addAP("ssid_from_AP_1", "your_password_for_AP_1");
+//  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
+//  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
+    
+  wifiMulti.addAP("FlatRockPoint", "8072243274");
+  wifiMulti.addAP("4254", "6129206467");
+    
   setupWifi();
 
   // Create server and assign callbacks for MQTT

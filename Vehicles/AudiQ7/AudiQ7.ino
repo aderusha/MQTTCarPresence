@@ -1,10 +1,14 @@
-//Set Wifi AP and Passwords below
-const char* otaPassword = "";  // OTA update password
-const char* mqttServer = "";  // Your MQTT server IP address
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Modify these values for your environment
+const char* wifiSSID = "4254GAR";  // Your WiFi network name
+const char* wifiPassword = "6129206467";  // Your WiFi network password
+const char* otaPassword = "dfDF34#$";  // OTA update password
+const char* mqttServer = "192.168.1.187";  // Your MQTT server IP address
 const char* mqttUser = ""; // mqtt username, set to "" for no user
 const char* mqttPassword = ""; // mqtt password, set to "" for no password
-const String mqttNode = "FishHawk"; // Your unique hostname for this device
+const String mqttNode = "AudiQ7"; // Your unique hostname for this device
 const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
 // We'll create one binary_sensor device to track MQTT connectivity
@@ -32,7 +36,6 @@ const unsigned long twinkleInterval = 50;
 unsigned long twinkleTimer = millis();
 
 #include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
@@ -40,8 +43,6 @@ unsigned long twinkleTimer = millis();
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
-ESP8266WiFiMulti wifiMulti;
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // System setup
@@ -53,12 +54,6 @@ void setup() {
   Serial.println("\nHardware initialized, starting program load");
 
   // Start up networking
-  WiFi.mode(WIFI_STA);
-  
-  wifiMulti.addAP("ssid_from_AP_1", "your_password_for_AP_1");
-  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
-  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
-        
   setupWifi();
 
   // Create server and assign callbacks for MQTT
@@ -77,7 +72,7 @@ void setup() {
 // Main execution loop
 void loop() {
   // check WiFi connection
-  if (wifiMulti.run() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED) {
     setupWifi();
   }
 
@@ -123,23 +118,18 @@ void mqtt_callback(char* topic, byte* payload, unsigned int payloadLength) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Connect to WiFi
 void setupWifi() {
-  Serial.print("Connecting to WiFi network");
-  //WiFi.hostname(mqttNode.c_str());
-  //WiFi.mode(WIFI_STA);
-  //WiFi.begin(wifiSSID, wifiPassword);
-
+  Serial.print("Connecting to WiFi network: " + String(wifiSSID));
+  WiFi.hostname(mqttNode.c_str());
   WiFi.mode(WIFI_STA);
+  WiFi.begin(wifiSSID, wifiPassword);
 
-  while (wifiMulti.run() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {
     // Wait 500msec seconds before retrying
     delay(500);
     Serial.print(".");
   }
-
   Serial.println("\nWiFi connected successfully and assigned IP: " + WiFi.localIP().toString());
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // MQTT connection and subscriptions
