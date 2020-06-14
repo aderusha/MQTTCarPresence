@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Modify these values for your environment
 const char* otaPassword = "dfDF34#$";  // OTA update password
-const char* mqttServer = "192.168.1.187";  // Your MQTT server IP address
+const char* mqttServer = "192.168.2.89";  // Your MQTT server IP address
 const char* mqttUser = ""; // mqtt username, set to "" for no user
 const char* mqttPassword = ""; // mqtt password, set to "" for no password
 const String mqttNode = "FishHawk"; // Your unique hostname for this device
@@ -57,12 +57,9 @@ void setup() {
   // Start up networking
   WiFi.mode(WIFI_STA);
   
-//  wifiMulti.addAP("ssid_from_AP_1", "your_password_for_AP_1");
-//  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
-//  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
-    
-  wifiMulti.addAP("FlatRockPoint", "8072243274");
-  wifiMulti.addAP("4254", "6129206467");
+  wifiMulti.addAP("FlatRockPoint24", "8072243274");
+  wifiMulti.addAP("OldCabin24", "8072243274");
+  //wifiMulti.addAP("4254", "6129206467");
     
   setupWifi();
 
