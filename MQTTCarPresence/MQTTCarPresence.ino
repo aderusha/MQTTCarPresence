@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Modify these values for your environment
-const char* wifiSSID = "wifissid";  // Your WiFi network name
-const char* wifiPassword = "wifipassword";  // Your WiFi network password
+const char* wifiSSID = "FlatRockPoint24";  // Your WiFi network name
+const char* wifiPassword = "8072243274";  // Your WiFi network password
 const char* otaPassword = "";  // OTA update password
-const char* mqttServer = "192.168.1.2";  // Your MQTT server IP address
+const char* mqttServer = "192.168.2.60";  // Your MQTT server IP address
 const char* mqttUser = ""; // mqtt username, set to "" for no user
 const char* mqttPassword = ""; // mqtt password, set to "" for no password
-const String mqttNode = "CarPresence"; // Your unique hostname for this device
+const String mqttNode = "FishHawk"; // Your unique hostname for this device
 const String mqttDiscoveryPrefix = "homeassistant"; // Home Assistant MQTT Discovery, see https://home-assistant.io/docs/mqtt/discovery/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
