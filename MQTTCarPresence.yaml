@@ -1,29 +1,51 @@
-# car sensor is connected and the garage door is closed
-- alias: CarPresence_ON
-  trigger:
-    platform: state
-    entity_id: binary_sensor.CarPresence
+blueprint:
+  name: MQTTCarPresence
+  description: Open garage door when car connects to Wi-Fi
+  domain: automation
+  input:
+    garage_door:
+      name: Garage Door Cover
+      description: This cover is the Garage Door
+      selector:
+        entity:
+          domain: cover
+    car_presence:
+      name: Car Presence Sensor
+      description: "This sensor is the car's connection to the MQTT broker"
+      selector:
+        entity:
+          domain: binary_sensor
+mode: single
+trigger:
+  - platform: state
+    entity_id: !input car_presence
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: 'cover.garage_door'
-    state: 'closed'
-  action:
-  - service: cover.open_cover
-    entity_id: 'cover.garage_door'
-
-# car sensor is disconnected for one minute and the garage door is open
-- alias: CarPresence_OFF
-  trigger:
-    platform: state
-    entity_id: binary_sensor.CarPresence
+  - platform: state
+    entity_id: !input car_presence
     to: 'off'
     for:
       minutes: 1
-  condition:
-  - condition: state
-    entity_id: 'cover.garage_door'
-    state: 'open'
-  action:
-  - service: cover.close_cover
-    entity_id: 'cover.garage_door'
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: !input car_presence
+            state: 'on'
+          - condition: state
+            entity_id: !input garage_door
+            state: closed
+        sequence:
+          - service: cover.open_cover
+            entity_id: !input garage_door
+      - conditions:
+          - condition: state
+            entity_id: !input car_presence
+            state: 'off'
+          - condition: state
+            entity_id: !input garage_door
+            state: open
+        sequence:
+          - service: cover.close_cover
+            entity_id: !input garage_door
+    default: []
