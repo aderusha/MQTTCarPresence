@@ -8,6 +8,8 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 
 [The included Home Assistant blueprint automation](MQTTCarPresence.yaml) example utilizes this information to open or close a connected garage door. Just copy the file url into the blueprint import menu and create an automation using the blueprint!
 
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Faderusha%2FMQTTCarPresence%2Fmaster%2FMQTTCarPresence.yaml)
+
 ## Workflow - User perspective
 
 * Car is in your garage and the garage door is closed
