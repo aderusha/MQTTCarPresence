@@ -60,7 +60,7 @@ In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need 
 
 ## Tasmota Firmware Variant
 
-If you are more familiar to Tasmota flashing and usage rather than Arduino Programming and building, this is another variant that you could use.  It will replace the **Arduino Programming** section above, but follows the guidelines of just about everything else.  The blueprint attached to this is named MQTT_Tasmota_CarPresence.yaml can be used as an alternate along with flashing the Di-Mini with Tasmota to accomplish the same thing as the original.  
+If you are more familiar to Tasmota flashing and usage rather than Arduino Programming and building, this is another variant that you could use.  It will replace the **Arduino Programming** section above, but follows the guidelines of just about everything else.  The blueprint that is attached to this project named MQTT_Tasmota_CarPresence.yaml can be used as an alternate along with flashing the Di-Mini with Tasmota to accomplish the same thing as the original.  
 
 This Tasmota Variant is set-up to work with [Home Assistant Tasmota Integration](https://www.home-assistant.io/integrations/tasmota/) to automatically create a `switch` which will indicate the connection status of the Car Presence Device.  It should show up as a switch with a name that matches the FriendlyName set-up in the Tasmota Web Console.
 
@@ -74,9 +74,9 @@ This Tasmota Variant is set-up to work with [Home Assistant Tasmota Integration]
     * set GPIO4 as Button 1
     * set GPIO5 as Relay 1
 * On the console, paste this to set-up the mcu functions as required for proper operation (Check Tasmota website for details on what these are):  
-    * ```Backlog WifiConfig 5; SO19 0; SO56 1; SO63 1; SO65 1```
+    * ```Backlog  SO19 0; SO56 1; SO63 1; SO65 1; WifiConfig 5```
 * Go to Configure Other and be sure to set a Web Admin Password in case it goes into AP mode when you are away from Home.
-* Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml` similar to the instructions above.
+* Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml` similar to the instructions for the other blueprint above.
 
 ## Buy me a coffee
 
