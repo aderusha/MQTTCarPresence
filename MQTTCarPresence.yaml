@@ -4,13 +4,13 @@ blueprint:
   domain: automation
   input:
     garage_door:
-      name: Garage Door Cover
+      name: Garage Door
       description: This cover is the Garage Door
       selector:
         entity:
           domain: cover
     car_presence:
-      name: Car Presence Sensor
+      name: Car Presence
       description: "This sensor is the car's connection to the MQTT broker"
       selector:
         entity:
