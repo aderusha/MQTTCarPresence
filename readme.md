@@ -60,13 +60,19 @@ In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need 
 
 ## Tasmota Firmware Variant
 
-If you are more familiar to Tasmota flashing and usage rather that arduino programming and building, this is another variant that you could use.  It will replacve the **Arduino Programming** section above.  The blueprint attached to this named MQTT_Tasmota_CarPresence.yaml can be used as an alternate along with flashing the Di-Mini with Tasmota to accomplish the same thing.  Follow these steps to flash the DI Mini:
+If you are more familiar to Tasmota flashing and usage rather that arduino programming and building, this is another variant that you could use.  It will replacve the **Arduino Programming** section above.  The blueprint attached to this named MQTT_Tasmota_CarPresence.yaml can be used as an alternate along with flashing the Di-Mini with Tasmota to accomplish the same thing.  
 
-* Flash the latest Tasmota
+####    Follow these steps to flash the D1 Mini: ####
+
+* Flash the D1 Mini to the latest Tasmota version.
 * Set up your WIFI, MQTT, Hostname, Friendly name, and all the normal stuff.  Details on the Tasmota homepage.
-* Set the Device module to type generic(18)
-* Under configure module, set GPIO2 as LEDi 1  set GPIO4 as Button 1   set GPIO5 as Relay 1
-* On the console paste this so set the mcu functions:  ```Backlog WifiConfig 5;SO19 0;SO56 1; SO63 1;SO65 1```
+* Set the Device module to type `generic(18)`.
+* Under configure module, 
+    * set GPIO2 as LEDi 1
+    * set GPIO4 as Button 1
+    * set GPIO5 as Relay 1
+* On the console paste this so set the mcu functions (Check Tasmota website for details on what these are):  
+    ```Backlog WifiConfig 5;SO19 0;SO56 1; SO63 1;SO65 1```
 * Go to Configure Other and be sure to set a Web Admin Password in case it goes into AP mode when you are away from Home.
 * Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml`.
 
