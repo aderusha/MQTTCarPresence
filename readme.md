@@ -62,7 +62,9 @@ In order to utilize an external antenna on the WeMos D1 Mini Pro, you will need 
 
 If you are more familiar to Tasmota flashing and usage rather that arduino programming and building, this is another variant that you could use.  It will replace the **Arduino Programming** section above.  The blueprint attached to this named MQTT_Tasmota_CarPresence.yaml can be used as an alternate along with flashing the Di-Mini with Tasmota to accomplish the same thing.  
 
-####    Follow these steps to flash the D1 Mini: ####
+This Tasmota Variant is set-up to work with [Home Assistant Tasmota Integration](https://www.home-assistant.io/integrations/tasmota/) to automatically create a `switch` which will indicate the connection status of the Car Presence Device.  It should show up as a switch with a name that matches the FriendlyName set-up in the Tasmota Web Console.
+
+####    Follow these steps to flash the D1 Mini if using Tasmota: ####
 
 * Flash the D1 Mini to the latest Tasmota version.
 * Set up your WIFI, MQTT, Hostname, Friendly name, and all the normal stuff.  Details on the Tasmota homepage.
@@ -71,10 +73,10 @@ If you are more familiar to Tasmota flashing and usage rather that arduino progr
     * set GPIO2 as LEDi 1
     * set GPIO4 as Button 1
     * set GPIO5 as Relay 1
-* On the console paste this so set the mcu functions as required (Check Tasmota website for details on what these are):  
-    * ```Backlog WifiConfig 5;SO19 0;SO56 1; SO63 1;SO65 1```
+* On the console, paste this to set-up the mcu functions as required for proper operation (Check Tasmota website for details on what these are):  
+    * ```Backlog WifiConfig 5; SO19 0; SO56 1; SO63 1; SO65 1```
 * Go to Configure Other and be sure to set a Web Admin Password in case it goes into AP mode when you are away from Home.
-* Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml`.
+* Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml`similar to the instructions above.
 
 ## Buy me a coffee
 
