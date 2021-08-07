@@ -77,6 +77,7 @@ This Tasmota Variant is set-up to work with [Home Assistant Tasmota Integration]
     * ```Backlog  SO19 0; SO56 1; SO63 1; SO65 1; WifiConfig 5```
 * Go to Configure Other and be sure to set a Web Admin Password in case it goes into AP mode when you are away from Home.
 * Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml` similar to the instructions for the other blueprint above.
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgist.github.com%2FSirGoodenough%2Ff2fb094c399a2a308bc74938cb428716)
 
 ## Buy me a coffee
 
