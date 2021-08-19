@@ -78,6 +78,8 @@ This Tasmota Variant is set-up to work with [Home Assistant Tasmota Integration]
 * Go to Configure Other and be sure to set a Web Admin Password in case it goes into AP mode when you are away from Home.
 * Set-up the blueprint `MQTT_Tasmota_CarPresence.yaml` similar to the instructions for the other blueprint above.
 
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Faderusha%2FMQTTCarPresence%2Fblob%2Fmaster%2FMQTT_Tasmota_CarPresence.yaml)
+
 ## Buy me a coffee
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/gW5rPpsKR)
