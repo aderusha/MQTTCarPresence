@@ -1,6 +1,7 @@
 blueprint:
   name: MQTT_Tasmota_CarPresence
   description: Open garage door when car connects to Wi-Fi
+  source_url: https://github.com/aderusha/MQTTCarPresence/blob/master/MQTT_Tasmota_CarPresence.yaml
   domain: automation
   input:
     garage_door:
