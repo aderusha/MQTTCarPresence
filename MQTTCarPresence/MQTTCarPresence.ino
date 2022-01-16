@@ -21,8 +21,6 @@ const String mqttDiscoSignalConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqt
 const String mqttDiscoUptimeStateTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-uptime/state";
 const String mqttDiscoUptimeConfigTopic = mqttDiscoveryPrefix + "/sensor/" + mqttNode + "-uptime/config";
 
-// The strings below will spill over the PubSubClient_MAX_PACKET_SIZE 128
-// You'll need to manually set MQTT_MAX_PACKET_SIZE in PubSubClient.h to 512
 const String mqttDiscoBinaryConfigPayload = "{\"name\": \"" + mqttNode + "\", \"device_class\": \"connectivity\", \"state_topic\": \"" + mqttDiscoBinaryStateTopic + "\"}";
 const String mqttDiscoSignalConfigPayload = "{\"name\": \"" + mqttNode + "-signal\", \"state_topic\": \"" + mqttDiscoSignalStateTopic + "\", \"unit_of_measurement\": \"dBm\", \"value_template\": \"{{ value }}\"}";
 const String mqttDiscoUptimeConfigPayload = "{\"name\": \"" + mqttNode + "-uptime\", \"state_topic\": \"" + mqttDiscoUptimeStateTopic + "\", \"unit_of_measurement\": \"msec\", \"value_template\": \"{{ value }}\"}";
@@ -60,6 +58,10 @@ void setup()
   // Create server and assign callbacks for MQTT
   mqttClient.setServer(mqttServer, 1883);
   mqttClient.setCallback(mqtt_callback);
+
+// The string payloads spill over the default MAX_PACKET_SIZE 128.
+  mqttClient.setBufferSize(512);
+
   mqttConnect();
 
   // Start up OTA

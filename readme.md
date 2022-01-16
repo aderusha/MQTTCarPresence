@@ -46,7 +46,7 @@ This project utilizes a [WeMos D1 mini Pro](https://wiki.wemos.cc/products:d1:d1
 
 The first order of business will be to setup the Arduino IDE to flash the provided Arduino sketch to the ESP8266.  [Download the IDE for your platform](https://www.arduino.cc/en/Main/Software) and [follow these instructions to add support for the ESP8266 platform](https://github.com/esp8266/Arduino#installing-with-boards-manager).
 
-Next you will need to add the PubSubClient library for MQTT.  [Follow this guide for the general process](https://www.arduino.cc/en/Guide/Libraries) and add the 'PubSubClient' from the Library Manager.  Once that is installed you will need to edit the `PubSubClient.h` file and change the line `#define MQTT_MAX_PACKET_SIZE 128` to `#define MQTT_MAX_PACKET_SIZE 512`.  You can find the installed library under the path shown in `File > Preferences > Sketchbook location`.
+Next you will need to add the PubSubClient library for MQTT.  [Follow this guide for the general process](https://www.arduino.cc/en/Guide/Libraries) and add the 'PubSubClient' from the Library Manager.
 
 [At the top of the Arduino sketch are several fields you must modify to fit your environment](https://github.com/aderusha/MQTTCarPresence/blob/master/MQTTCarPresence/MQTTCarPresence.ino#L3-L10) (WiFi details, MQTT broker IP, node name, etc).  Once those fields have been set you can upload to your microcontroller and monitor sensor status in Home Assistant.
 
