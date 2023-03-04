@@ -1,8 +1,11 @@
 blueprint:
   name: MQTTCarPresence
+  author: aderusha (Luma)
   description: Open garage door when car connects to Wi-Fi
   source_url: https://github.com/aderusha/MQTTCarPresence/blob/master/MQTTCarPresence.yaml
   domain: automation
+  homeassistant:
+    min_version: 2023.3.0
   input:
     garage_door:
       name: Garage Door Cover
