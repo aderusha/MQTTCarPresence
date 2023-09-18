@@ -12,13 +12,15 @@ blueprint:
       description: This cover is the Garage Door
       selector:
         entity:
-          domain: cover
+          filter:
+            - domain: cover
     car_presence:
       name: Car Presence Sensor
       description: "This sensor is the car's connection to the MQTT broker"
       selector:
         entity:
-          domain: binary_sensor
+          filter:
+            - domain: binary_sensor
 mode: single
 trigger:
   - platform: state

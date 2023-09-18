@@ -12,13 +12,15 @@ blueprint:
       description: This cover is the Garage Door
       selector:
         entity:
-          domain: cover
+          filter:
+            - domain: cover
     car_presence:
       name: Car Presence
       description: "This switch is the car's connection to the MQTT broker"
       selector:
         entity:
-          domain: switch
+          filter:
+            - domain: switch
 mode: single
 trigger:
   - platform: state
